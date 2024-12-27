@@ -1,19 +1,23 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 // Attribute Schema
 const AttributeSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Attribute name, e.g., "Size", "Color"
   values: [{ type: String, required: true }] // Possible values, e.g., ["Small", "Medium", "Large"] for "Size"
 });
 
+const FeatureIconSchema = new mongoose.Schema({
+  
+    icon: {type: String , required: true},
+    description: {type: String , required: true},
+  
+})
 // Product Schema
 const ProductSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Product name, e.g., "T-shirt"
   description: { type: String, required: true }, // Product description
-  features: [
-    {
-      icon: String,
-      description: String,
-    },
+  features: [{
+    type: mongoose.Schema.Types.ObjectId, ref: 'FeatureIcon'
+  }
   ],
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }, // Category reference
   subCategory: { type: mongoose.Schema.Types.ObjectId, ref: 'SubCategory', required: true }, // SubCategory reference
@@ -26,11 +30,12 @@ const ProductSchema = new mongoose.Schema({
   attributeVariants: [
       {
           // Combination of attribute values (e.g., Size: Medium, Color: Red)
-          variantCombination: [
-              { type: mongoose.Schema.Types.ObjectId, ref: 'Attribute', required: true }, // Attribute reference
-              { type: String, required: true } // Specific value, e.g., "Medium", "Red"
+          variantCombination: [{
+            attribute: { type: mongoose.Schema.Types.ObjectId, ref: 'Attribute', required: true }, // Attribute reference
+            value: { type: String, required: true } }// Specific value, e.g., "Medium", "Red"
           ],
-          images: [{ type: String }] // Images specific to this variant combination
+          images: [{ type: String }],
+          stock: { type: Number, required: true }// Images specific to this variant combination
       }
   ],
   price: { type: Number, required: true }, // Base price of the product
@@ -59,8 +64,9 @@ const Attribute = mongoose.model('Attribute', AttributeSchema);
 const Product = mongoose.model('Product', ProductSchema);
 const Category = mongoose.model('Category', CategorySchema);
 const SubCategory = mongoose.model('SubCategory', SubCategorySchema);
+const FeatureIcon = mongoose.model('FeatureIcon', FeatureIconSchema)
 
-module.exports = { Attribute, Product, Category, SubCategory };
+export { Attribute, Product, Category, SubCategory , FeatureIcon};
 
 
 
