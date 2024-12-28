@@ -6,15 +6,15 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 export const getProductsByCategory = asyncHandler(
     async (req,res)=> {
-        const {category} = req.params
-        if(!category){
+        const {categoryId} = req.params
+        if(!categoryId){
            
             throw(new ApiError('Please Provide Name of the category'))
         
         }
         const products = await Product.find(
             {
-                category:category
+                category:categoryId
             }
         )
         if(!products){
@@ -26,15 +26,16 @@ export const getProductsByCategory = asyncHandler(
 )
 export const getProductBySubCategory =  asyncHandler(
     async(req , res)=>{
-        const {category} = req.params
-        if(!category){
+        const {categoryId,subcategoryId} = req.params
+        if(!categoryId || !subcategoryId){
            
             throw(new ApiError('Please Provide Name of the category'))
         
         }
         const products = await Product.find(
-            {
-                category:category
+            {   
+                category:categoryId,
+                subCategory:subcategoryId
             }
         )
         if(!products){
@@ -57,7 +58,7 @@ export const getProductById =  asyncHandler(
         .populate({path:'features',select:'icon description'}) // Populate subcategory name
         .populate({
             path: 'attributes.attribute',
-            select: 'name values' // Populate attribute name and global values
+            select: 'name' // Populate attribute name and global values
         }).populate({
             path:'attributeVariants.variantCombination.attribute',
             select: 'name '

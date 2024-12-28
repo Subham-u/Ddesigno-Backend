@@ -124,3 +124,51 @@ export const listProduct = asyncHandler(
     }
 
 )
+export const getCategories = asyncHandler(
+    async (req,res)=> {
+       
+        const categories = await Category.find().populate('subCategories', 'name');
+        return res.status(200).json( new ApiResponse(200,categories,"Category got Successfully") )
+        
+    }
+
+)
+export const getCategoriesById = asyncHandler(
+    async (req,res)=> {
+        const{categoryId}= req.params
+        const categories = await Category.findById(categoryId).populate('subCategories', 'name');
+        return res.status(200).json( new ApiResponse(200,categories,"Category got Successfully") )
+        
+    }
+
+)
+export const getAtributes = asyncHandler(
+    async (req,res)=> {
+       
+        const attributes = await Attribute.find();
+        return res.status(200).json( new ApiResponse(200,attributes,"attributes got Successfully") )
+        
+    }
+
+)
+export const getAtributeById = asyncHandler(
+    async (req,res)=> {
+        const{attributeId} = req.params;
+        const attributes = await Attribute.findById(attributeId);
+        return res.status(200).json( new ApiResponse(200,attributes,"attributes got Successfully") )
+        
+    }
+
+)
+export const getSubCategories = asyncHandler(
+    async (req,res)=> {
+        const {categoryId} = req.params
+        const subCatagories = await SubCategory.find({
+            parentCategory:categoryId
+        }).populate("parentCategory", "name");
+        return res.status(200).json( new ApiResponse(200,subCatagories,"SubCategory Created Successfully") )
+        
+    }
+
+)
+
