@@ -195,3 +195,20 @@ export const getSubCategories = asyncHandler(async (req, res) => {
       new ApiResponse(200, subCatagories, "SubCategory Created Successfully"),
     );
 });
+
+export const getFeatureIcons = asyncHandler(async (req, res) => {
+  const featureIcons = await FeatureIcon.find();
+  return res
+    .status(200)
+    .json(new ApiResponse(200, featureIcons, "attributes got Successfully"));
+});
+
+export const getFeatureIconById = asyncHandler(async (req, res) => {
+  const { featureIconId } = req.params;
+  const featureIcon = await FeatureIcon.findById(featureIconId)
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, featureIcon, "SubCategory Created Successfully"),
+    );
+});

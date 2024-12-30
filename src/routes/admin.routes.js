@@ -8,6 +8,8 @@ import {
   getAtributes,
   getCategories,
   getCategoriesById,
+  getFeatureIconById,
+  getFeatureIcons,
   getSubCategories,
   listProduct,
 } from "../controllers/admin.controller.js";
@@ -23,4 +25,6 @@ router.route("/get-attributes").get(getAtributes);
 router.route("/get-subcategories/:categoryId").get(getSubCategories);
 router.route("/get-category-by-id/:categoryId").get(getCategoriesById);
 router.route("/get-attribute-by-id/:attributeId").get(getAtributeById);
+router.route("/get-feature-icons").get(getFeatureIcons);
+router.route("/get-feature-icon-by-id/:featureIconId").get(getFeatureIconById);
 export default router;
