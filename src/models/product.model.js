@@ -27,7 +27,6 @@ const ProductSchema = new mongoose.Schema({
   subCategory: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "SubCategory",
-    required: true,
   }, // SubCategory reference
   attributes: [
     {
