@@ -205,10 +205,34 @@ export const getFeatureIcons = asyncHandler(async (req, res) => {
 
 export const getFeatureIconById = asyncHandler(async (req, res) => {
   const { featureIconId } = req.params;
-  const featureIcon = await FeatureIcon.findById(featureIconId)
+  const featureIcon = await FeatureIcon.findById(featureIconId);
   return res
     .status(200)
     .json(
       new ApiResponse(200, featureIcon, "SubCategory Created Successfully"),
     );
+});
+
+export const deleteCategory = asyncHandler(async (req, res) => {
+  const { categoryid, subcatagoriesid } = req.body;
+  if (!categoryid) {
+    throw new ApiError("Please povide categoryid");
+  }
+
+  const findCategory = await Category.find({ _id: categoryid });
+
+  if (findCategory.length === 0) {
+    return res.json(new ApiResponse(400, "category not found"));
+  }
+  await Category.deleteOne({ _id: categoryid });
+
+  if (subcatagoriesid.length > 0) {
+    await SubCategory.deleteMany({ _id: subcatagoriesid });
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "deleted category and subCategory"));
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, findCategory, "deleted category"));
 });
