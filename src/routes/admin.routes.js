@@ -4,7 +4,9 @@ import {
   createCategory,
   createFeatureIcon,
   createSubCategory,
+  deleteAttribute,
   deleteCategory,
+  deleteFeatureIcon,
   getAtributeById,
   getAtributes,
   getCategories,
@@ -29,4 +31,6 @@ router.route("/get-attribute-by-id/:attributeId").get(getAtributeById);
 router.route("/get-feature-icons").get(getFeatureIcons);
 router.route("/get-feature-icon-by-id/:featureIconId").get(getFeatureIconById);
 router.route("/delete-categorie").post(deleteCategory);
+router.route("/delete-feature-icon").post(deleteFeatureIcon);
+router.route("/delete-attribute").post(deleteAttribute);
 export default router;

@@ -236,3 +236,35 @@ export const deleteCategory = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, findCategory, "deleted category"));
 });
+
+export const deleteFeatureIcon = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+  if (!id) {
+    throw new ApiError("Please povide categoryid");
+  }
+
+  const findFeaturbyId = await FeatureIcon.findOne({ _id: id });
+
+  if (!findFeaturbyId) {
+    return res.json(new ApiResponse(400, "not feature icon found"));
+  }
+  await FeatureIcon.deleteOne({ _id: id });
+
+  return res.status(200).json(new ApiResponse(200, "deleted feature icon"));
+});
+
+export const deleteAttribute = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+  if (!id) {
+    throw new ApiError("Please povide categoryid");
+  }
+
+  const findAttributebyId = await Attribute.findOne({ _id: id });
+
+  if (!findAttributebyId) {
+    return res.json(new ApiResponse(400, "not attributed found"));
+  }
+  await Attribute.deleteOne({ _id: id });
+
+  return res.status(200).json(new ApiResponse(200, "deleted attributed"));
+});
