@@ -65,6 +65,7 @@ const ProductSchema = new mongoose.Schema({
 // Category Schema
 const CategorySchema = new mongoose.Schema({
   name: { type: String, required: true }, // e.g., "Clothing"
+  image: { type: String, required: true },
   subCategories: [{ type: mongoose.Schema.Types.ObjectId, ref: "SubCategory" }], // Subcategories under this category
 });
 

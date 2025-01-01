@@ -11,9 +11,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { API_STATES } from "../utils/ApiStates.js";
 
 export const createCategory = asyncHandler(async (req, res) => {
-  const { name } = req.body;
+  const { name, image } = req.body;
 
-  if (!name) {
+  if (!name || !image) {
     throw new ApiError("Please Provide Name of the category");
   }
 
@@ -25,6 +25,7 @@ export const createCategory = asyncHandler(async (req, res) => {
 
   const newCategory = await Category.create({
     name,
+    image,
   });
 
   if (!newCategory) {
