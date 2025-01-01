@@ -39,8 +39,8 @@ export const createCategory = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, newCategory, "Category Created Successfully"));
 });
 export const createSubCategory = asyncHandler(async (req, res) => {
-  const { name, categoryId } = req.body;
-  if (!name || !categoryId) {
+  const { name, categoryId, image } = req.body;
+  if (!name || !categoryId || !image) {
     throw new ApiError(400, "Please Provide Required Details");
   }
   const category = await Category.findById(categoryId);
@@ -50,6 +50,7 @@ export const createSubCategory = asyncHandler(async (req, res) => {
   const subCategory = await SubCategory.create({
     name,
     parentCategory: category._id,
+    image,
   });
   if (!subCategory) {
     throw new ApiError(
@@ -153,7 +154,10 @@ export const listProduct = asyncHandler(async (req, res) => {
 });
 
 export const getCategories = asyncHandler(async (req, res) => {
-  const categories = await Category.find().populate("subCategories", "name");
+  const categories = await Category.find().populate("subCategories", [
+    "name",
+    "image",
+  ]);
   return res
     .status(200)
     .json(new ApiResponse(200, categories, "Category got Successfully"));

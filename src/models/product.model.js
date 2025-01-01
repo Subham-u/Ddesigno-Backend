@@ -72,6 +72,7 @@ const CategorySchema = new mongoose.Schema({
 // SubCategory Schema
 const SubCategorySchema = new mongoose.Schema({
   name: { type: String, required: true }, // e.g., "Men"
+  image: { type: String, required: true },
   parentCategory: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
