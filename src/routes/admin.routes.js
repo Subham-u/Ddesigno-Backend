@@ -4,9 +4,11 @@ import {
   createCategory,
   createFeatureIcon,
   createSubCategory,
+  createTag,
   deleteAttribute,
   deleteCategory,
   deleteFeatureIcon,
+  deleteTag,
   getAtributeById,
   getAtributes,
   getCategories,
@@ -14,6 +16,7 @@ import {
   getFeatureIconById,
   getFeatureIcons,
   getSubCategories,
+  getTags,
   listProduct,
 } from "../controllers/admin.controller.js";
 const router = Router();
@@ -33,4 +36,7 @@ router.route("/get-feature-icon-by-id/:featureIconId").get(getFeatureIconById);
 router.route("/delete-categorie").post(deleteCategory);
 router.route("/delete-feature-icon").post(deleteFeatureIcon);
 router.route("/delete-attribute").post(deleteAttribute);
+router.route("/create-tag").post(createTag);
+router.route("/delete-tag").post(deleteTag);
+router.route("/get-tags").get(getTags);
 export default router;

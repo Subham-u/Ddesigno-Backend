@@ -5,6 +5,7 @@ import {
   FeatureIcon,
   Product,
   SubCategory,
+  Tag,
 } from "../models/product.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -121,6 +122,9 @@ export const listProduct = asyncHandler(async (req, res) => {
     price,
     stock,
     images,
+    offerPrice,
+    tags,
+    reviewRating,
   } = req.body;
 
   console.log(req.body);
@@ -140,6 +144,9 @@ export const listProduct = asyncHandler(async (req, res) => {
     price,
     stock,
     images,
+    tags,
+    offerPrice,
+    reviewRating,
   });
 
   if (!newProduct) {
@@ -272,4 +279,41 @@ export const deleteAttribute = asyncHandler(async (req, res) => {
   await Attribute.deleteOne({ _id: id });
 
   return res.status(200).json(new ApiResponse(200, "deleted attributed"));
+});
+
+export const createTag = asyncHandler(async (req, res) => {
+  const { tag } = req.body;
+  if (!tag) {
+    throw new ApiError("Please povide categoryid");
+  }
+
+  const findTag = await Tag.findOne({ tag });
+
+  if (findTag) {
+    return res.json(new ApiResponse(400, "Tag already exists"));
+  }
+
+  const data = await Tag.create({ tag });
+  return res.status(200).json(new ApiResponse(200, data, "created a new Tag"));
+});
+
+export const deleteTag = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+  if (!id) {
+    throw new ApiError("Please povide TagId");
+  }
+
+  const findTag = await Tag.findOne({ _id: id });
+
+  if (!findTag) {
+    return res.json(new ApiResponse(400, "not Tag found"));
+  }
+
+  await Tag.deleteOne({ _id: id });
+  return res.status(200).json(new ApiResponse(200, "tag successfully deleted"));
+});
+
+export const getTags = asyncHandler(async (req, res) => {
+  const tags = await Tag.find();
+  return res.status(200).json(new ApiResponse(200, tags));
 });

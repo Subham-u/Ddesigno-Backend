@@ -13,4 +13,3 @@ router
   .route("/get-product-by-sub-category/:categoryId/:subcategoryId")
   .get(getProductBySubCategory);
 export default router;
-
