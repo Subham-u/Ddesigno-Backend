@@ -1,4 +1,4 @@
-import { Product, Tag } from "../models/product.model.js";
+import { FeatureIcon, Product, Tag } from "../models/product.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -88,4 +88,29 @@ export const getTagNames = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, tagNames, "Tag names fetched successfully"));
+});
+
+export const getFeatureIcons = asyncHandler(async (req, res) => {
+  const { ids } = req.body;
+
+  if (!ids || !Array.isArray(ids) || ids.length === 0) {
+    throw new ApiError(
+      "Please provide a valid array of feature icons IDs",
+      400,
+    );
+  }
+
+  const featureIcons = await FeatureIcon.find({ _id: { $in: ids } });
+
+  if (!featureIcons.length) {
+    return res.status(404).json(new ApiResponse(404, [], "No tags found"));
+  }
+
+  if (featureIcons.length === 0) {
+    return res.status(404).json(new ApiResponse(404, [], "No tag names found"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, featureIcons, "Tag names fetched successfully"));
 });

@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import {
+  getFeatureIcons,
   getProductById,
   getProductBySubCategory,
   getProductsByCategory,
@@ -14,4 +15,5 @@ router
   .route("/get-product-by-sub-category/:categoryId/:subcategoryId")
   .get(getProductBySubCategory);
 router.route("/get-tag-names").post(getTagNames);
+router.route("/get-feature-icons").post(getFeatureIcons);
 export default router;
