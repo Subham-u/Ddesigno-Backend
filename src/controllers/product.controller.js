@@ -1,4 +1,4 @@
-import { Product } from "../models/product.model.js";
+import { Product, Tag } from "../models/product.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -64,4 +64,28 @@ export const getProductById = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, product, "Category Created Successfully"));
+});
+
+export const getTagNames = asyncHandler(async (req, res) => {
+  const { ids } = req.body;
+
+  if (!ids || !Array.isArray(ids) || ids.length === 0) {
+    throw new ApiError("Please provide a valid array of Tag IDs", 400);
+  }
+
+  const tags = await Tag.find({ _id: { $in: ids } });
+
+  if (!tags.length) {
+    return res.status(404).json(new ApiResponse(404, [], "No tags found"));
+  }
+
+  const tagNames = tags.map((tag) => tag.tag).filter((tagName) => tagName);
+
+  if (tagNames.length === 0) {
+    return res.status(404).json(new ApiResponse(404, [], "No tag names found"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, tagNames, "Tag names fetched successfully"));
 });

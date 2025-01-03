@@ -315,5 +315,5 @@ export const deleteTag = asyncHandler(async (req, res) => {
 
 export const getTags = asyncHandler(async (req, res) => {
   const tags = await Tag.find();
-  return res.status(200).json(new ApiResponse(200, tags));
+  return res.status(200).json(new ApiResponse(200, tags, "good"));
 });
