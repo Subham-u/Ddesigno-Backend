@@ -54,7 +54,7 @@ export const getProductById = asyncHandler(async (req, res) => {
     })
     .populate({
       path: "attributeVariants.variantCombination.attribute",
-      select: "name ",
+      select: "name",
     });
   if (!product) {
     throw new ApiError(
