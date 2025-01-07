@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-// Order Schema
+import mongoose from "mongoose";
+
 const OrderSchema = new mongoose.Schema({
   customerDetails: {
     name: { type: String, required: true },

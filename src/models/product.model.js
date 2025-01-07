@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose from "mongoose";
 const AttributeSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Attribute name, e.g., "Size", "Color"
   values: [{ type: String, required: true }], // Possible values, e.g., ["Small", "Medium", "Large"] for "Size"

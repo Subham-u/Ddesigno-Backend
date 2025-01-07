@@ -7,25 +7,22 @@ const userSchema = new Schema(
       unique: true,
       trim: true,
     },
-    fullName: {
+    name: {
       type: String,
       required: true,
       trim: true,
       index: true,
     },
-    description: {
-      type: String,
-    },
-    gender: {
+    image: {
       type: String,
       required: true,
-      trim: true,
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
-    mobileNo: {
-      type: Number,
+    isVerified: {
+      type: Boolean,
       required: true,
-      trim: true,
-      unique: true,
+      default: false,
     },
     orderHistory: [
       {
@@ -39,16 +36,10 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
-    location: {
-      type: { type: String, required: true },
-      coordinates: [],
-    },
   },
   {
     timestamps: true,
   },
 );
-userSchema.index({ location: "2dsphere" });
 
 export const User = mongoose.model("User", userSchema);
-
