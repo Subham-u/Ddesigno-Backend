@@ -13,13 +13,17 @@ export const signup = asyncHandler(async (req, res) => {
   const { name, email, password, image } = req.body;
 
   if (!email || !password || !name) {
-    throw new ApiError(401, "email or password are missing");
+    return res.status(400).json({
+      message: "Email, password and name are required",
+    });
   }
 
   const isExisting = await User.findOne({ email });
 
   if (isExisting) {
-    throw new ApiError(401, "user already exists");
+    return res.status(401).json({
+      message: "your email already exists",
+    });
   }
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -50,25 +54,31 @@ export const signin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    throw new ApiError(400, "Email and password are required");
+    return res.status(400).json({
+      message: "Email and password are required",
+    });
   }
 
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
-    throw new ApiError(401, "Your not signed up");
+    return res.status(401).json({
+      message: "Your not signed up",
+    });
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-    throw new ApiError(401, "your Password is worng");
+    return res.status(401).json({
+      message: "your password is wrong",
+    });
   }
 
   if (user.isVerified === false) {
     await sendVerificationEmail(user.email, user._id);
     return res.status(401).json({
-      message: "plasce verify you mail",
+      message: "Email not verified",
     });
   }
 
@@ -138,8 +148,8 @@ export const forgetPassword = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError("user not found");
   }
-
-  user.password = newPassword;
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
   await user.save();
   return res
     .status(200)
