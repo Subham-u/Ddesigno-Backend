@@ -4,6 +4,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import {
+  sendForgetPassword,
+  sendVerificationEmail,
+} from "../services/email-services.js";
 
 export const signup = asyncHandler(async (req, res) => {
   const { name, email, password, image } = req.body;
@@ -27,26 +31,15 @@ export const signup = asyncHandler(async (req, res) => {
     image: image,
   });
 
-  const token = jwt.sign(
-    {
-      userId: user._id,
-      email: user.email,
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "24h",
-    },
-  );
-
   const userWithoutPassword = user.toObject();
   delete userWithoutPassword.password;
   delete userWithoutPassword.orderHistory;
 
-  res.cookie("token", token, {
-    // sameSite: process.env.PRODUCTION === "true" ? "None" : "Lax",
-    maxAge: new Date(Date.now() + parseInt(1 * 24 * 60 * 60 * 1000)),
-    // secure: process.env.PRODUCTION === "true" ? true : false,
-  });
+  await sendVerificationEmail(
+    userWithoutPassword.email,
+    userWithoutPassword._id
+  );
+  delete userWithoutPassword._id;
 
   return res
     .status(200)
@@ -72,6 +65,13 @@ export const signin = asyncHandler(async (req, res) => {
     throw new ApiError(401, "your Password is worng");
   }
 
+  if (user.isVerified === false) {
+    await sendVerificationEmail(user.email, user._id);
+    return res.status(401).json({
+      message: "plasce verify you mail",
+    });
+  }
+
   const token = jwt.sign(
     {
       userId: user._id,
@@ -80,16 +80,19 @@ export const signin = asyncHandler(async (req, res) => {
     process.env.JWT_SECRET,
     {
       expiresIn: "24h",
-    },
+    }
   );
+
   res.cookie("token", token, {
     secure: false,
     sameSite: "lax",
     expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
   });
+
   const userWithoutPassword = user.toObject();
   delete userWithoutPassword.password;
   delete userWithoutPassword.orderHistory;
+  delete userWithoutPassword._id;
 
   return res
     .status(200)
@@ -111,4 +114,61 @@ export const logout = asyncHandler(async (req, res) => {
 
 export const getCurrentUser = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, { userData: req.user }));
+});
+
+export const verifyEmail = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+  const user = await User.findById(id);
+  if (!user) {
+    throw new ApiError(401, "user not found");
+  }
+  user.isVerified = true;
+  await user.save();
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { message: "Email verified successfully" }));
+});
+
+export const forgetPassword = asyncHandler(async (req, res) => {
+  const { id, newPassword } = req.body;
+  if (!id || !newPassword) {
+    throw new ApiError("id or password is missing");
+  }
+  const user = await User.findById(id);
+  if (!user) {
+    throw new ApiError("user not found");
+  }
+
+  user.password = newPassword;
+  await user.save();
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { message: "password change" }));
+});
+
+export const forgetEmailPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    throw new ApiError("email is missing");
+  }
+  const user = await User.findOne({
+    email: email,
+  });
+
+  if (!user) {
+    throw new ApiError("user not found");
+  }
+
+  if (user.isVerified === false) {
+    await sendVerificationEmail(user.email, user._id);
+    return res.status(401).json({
+      message: "please verify you mail",
+    });
+  }
+
+  await sendForgetPassword(user.email, user._id);
+  return res.status(200).json({
+    message: "email sent",
+  });
 });
