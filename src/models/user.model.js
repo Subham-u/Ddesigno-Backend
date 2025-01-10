@@ -23,6 +23,7 @@ const userSchema = new Schema(
       required: true,
       default: false,
     },
+  
     orderHistory: [
       {
         type: Schema.Types.ObjectId,
