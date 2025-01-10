@@ -60,13 +60,8 @@ const ProductSchema = new mongoose.Schema({
       price: { type: Number, required: true },
     },
   ],
-  price: { type: Number, required: true },
-  stock: { type: Number, required: true }, // Total stock count
-  images: [{ type: String }], // General images for the product
-  offerPrice: { type: Number }, // Offer price for the product
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  reviewRating: { type: Number },
 });
 
 const CategorySchema = new mongoose.Schema({

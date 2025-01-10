@@ -252,7 +252,7 @@ export const deleteCategory = asyncHandler(async (req, res) => {
 export const deleteFeatureIcon = asyncHandler(async (req, res) => {
   const { id } = req.body;
   if (!id) {
-    throw new ApiError("Please povide categoryid");
+    throw new ApiError("Please provide categoryId");
   }
 
   const findFeaturbyId = await FeatureIcon.findOne({ _id: id });
@@ -284,7 +284,7 @@ export const deleteAttribute = asyncHandler(async (req, res) => {
 export const createTag = asyncHandler(async (req, res) => {
   const { tag } = req.body;
   if (!tag) {
-    throw new ApiError("Please povide categoryid");
+    throw new ApiError("Please provide categoryId");
   }
 
   const findTag = await Tag.findOne({ tag });
@@ -300,7 +300,7 @@ export const createTag = asyncHandler(async (req, res) => {
 export const deleteTag = asyncHandler(async (req, res) => {
   const { id } = req.body;
   if (!id) {
-    throw new ApiError("Please povide TagId");
+    throw new ApiError("Please provide TagId");
   }
 
   const findTag = await Tag.findOne({ _id: id });
