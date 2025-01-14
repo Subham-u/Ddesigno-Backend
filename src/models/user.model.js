@@ -7,6 +7,13 @@ const userSchema = new Schema(
       unique: true,
       trim: true,
     },
+    mobileNo: {
+      type: String,
+      
+      unique: true,
+      trim: true,
+
+    },
     name: {
       type: String,
       required: true,
@@ -27,8 +34,17 @@ const userSchema = new Schema(
     orderHistory: [
       {
         type: Schema.Types.ObjectId,
+        ref:''
       },
     ],
+    wishListItems:[{
+      type: Schema.Types.ObjectId,
+      ref: 'Product'
+    }],
+    cartItem:[{
+       type: Schema.Types.ObjectId,
+      ref: 'CartItem'
+    }],
     password: {
       type: String,
       required: [true, "password is required"],

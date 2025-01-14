@@ -53,6 +53,7 @@ export const signup = asyncHandler(async (req, res) => {
 export const signin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+
   if (!email || !password) {
     return res.status(400).json({
       message: "Email and password are required",
@@ -123,6 +124,7 @@ export const logout = asyncHandler(async (req, res) => {
 });
 
 export const getCurrentUser = asyncHandler(async (req, res) => {
+
   return res.status(200).json(new ApiResponse(200, { userData: req.user }));
 });
 

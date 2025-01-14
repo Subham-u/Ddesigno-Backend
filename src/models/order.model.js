@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 
 const OrderSchema = new mongoose.Schema({
-  customer: {
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    address: { type: String, required: true },
-    pincode:{type: String},
-    phone: { type: String, required: true },
+  address:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Address",
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,9 +17,6 @@ const OrderSchema = new mongoose.Schema({
     ref: "Product",
     required: true, // Reference to the product being ordered
   },
-  quantity: { type: Number, required: true }, // The quantity of the product ordered
-
-}],
   selectedAttributes: [
     {
       attribute: {
@@ -32,12 +27,13 @@ const OrderSchema = new mongoose.Schema({
       value: { type: String, required: true }, // The specific value of the attribute (e.g., 'Medium', 'Red')
     },
   ],
-  variantImages: [
-    {
-      type: String,
-      required: true,
-    },
-  ], // Images related to the selected variant (e.g., size and color combination images)
+  quantity: { type: Number, required: true },
+  offerdPrice:{type:Number , required: true},
+  actualPricer:{type:Number , required: true} // The quantity of the product ordered
+
+}],
+  
+// Images related to the selected variant (e.g., size and color combination images)
  
   totalPrice: { type: Number, required: true }, // Total price of the order (price * quantity)
   status: {
@@ -50,8 +46,9 @@ const OrderSchema = new mongoose.Schema({
         ref: "Review",
        
   },
-  createdAt: { type: Date, default: Date.now }, // Timestamp of order creation
-  updatedAt: { type: Date, default: Date.now }, // Timestamp of order updates
+// Timestamp of order updates
+},{
+  timestamps: true
 });
 
 // Model for the order

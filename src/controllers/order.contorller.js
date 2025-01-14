@@ -1,13 +1,15 @@
 import { Order } from "../models/oder.model";
 import { asyncHandler } from "../utils/asyncHandler";
 
-const createOrder = asyncHandler(
+const createOrderFromCart = asyncHandler(
     async(req,res)=>{
-        const{customer,userId,products,selectedAttributes,variantImages,totalPrice}=req.body;
+        const{address,userId,cartId,totalPrice}=req.body;
         const newOrder = Order.create({
             user:userId,
-            customer,
-            
+            address,
+
+
+
         })
 
     }
