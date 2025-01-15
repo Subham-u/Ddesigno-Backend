@@ -1,5 +1,6 @@
 import { Address } from "../models/address.model.js";
 import { CartItem } from "../models/cart.model.js";
+import { Order } from "../models/order.model.js";
 import { Product } from "../models/product.model.js";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -200,6 +201,69 @@ export const checkoutCart = asyncHandler(
         if(!user){
             throw new ApiError(400,'User Not found')
         }
+        const{address} = req.body
+        const cartItems = await CartItem.find({
+            user:user._id
+        })
+        
+    
+        let products = []
+        let totalOriginalPrice = 0
+        let totalOfferdPrice = 0
+        for(const i of cartItems){
+            totalOfferdPrice = totalOfferdPrice + i["offerdPrice"],
+            totalOriginalPrice = totalOriginalPrice + i["originalPrice"]
+            products.push({
+                "product":i["product"],
+                "selectedAttributes":i["selectedAttributes"],
+                "quantity":i["quantity"],
+                "offerdPrice":i["offerdPrice"],
+                "originalPrice":i["originalPrice"]
+            })
+        }
+
+        const newOrder = await Order.create({
+            user: user._id , 
+            address,
+            products,
+            totalOfferdPrice,
+            totalOriginalPrice
+        })
+        if(!newOrder){
+            throw new ApiError(500,"Order can not be created in database")
+        }
+
+        return res.status(200).json(new ApiResponse(200,newOrder,"Order created successfully"))
+        
+    
+    }
+)
+
+export const checkoutProduct = asyncHandler(
+    async(req,res)=>{
+        const user = req.user 
+        if(!user){
+            throw new ApiError(400,'User Not found')
+        }
+        const{address , productDetails } = req.body
+    
+    
+        const products = [productDetails]
+        const totalOriginalPrice = productDetails["originalPrice"]
+        const totalOfferdPrice = productDetails["offerdPrice"]
+
+        const newOrder = await Order.create({
+            user: user._id , 
+            address,
+            products,
+            totalOfferdPrice,
+            totalOriginalPrice
+        })
+        if(!newOrder){
+            throw new ApiError(500,"Order can not be created in database")
+        }
+
+        return res.status(200).json(new ApiResponse(200,newOrder,"Order created successfully"))
         
     
     }

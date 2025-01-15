@@ -119,10 +119,11 @@ export const listProduct = asyncHandler(async (req, res) => {
     attributes,
     features,
     attributeVariants,
-    price,
     stock,
     images,
-    offerPrice,
+    offerdPrice,
+    originalPrice,
+
     tags,
     reviewRating,
   } = req.body;
@@ -141,11 +142,11 @@ export const listProduct = asyncHandler(async (req, res) => {
     attributes,
     features,
     attributeVariants,
-    price,
+    originalPrice,
+    offerdPrice,
     stock,
     images,
     tags,
-    offerPrice,
     reviewRating,
   });
 

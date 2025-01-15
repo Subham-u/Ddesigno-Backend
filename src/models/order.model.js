@@ -29,13 +29,14 @@ const OrderSchema = new mongoose.Schema({
   ],
   quantity: { type: Number, required: true },
   offerdPrice:{type:Number , required: true},
-  actualPricer:{type:Number , required: true} // The quantity of the product ordered
+  originalPrice:{type:Number , required: true} // The quantity of the product ordered
 
 }],
   
 // Images related to the selected variant (e.g., size and color combination images)
  
-  totalPrice: { type: Number, required: true }, // Total price of the order (price * quantity)
+totalOriginalPrice: { type: Number, required: true },
+totalOfferdPrice: { type: Number, required: true }, // Total price of the order (price * quantity)
   status: {
     type: String,
     enum: ["pending", "processing", "shipped", "delivered", "cancelled"],

@@ -57,7 +57,8 @@ const ProductSchema = new mongoose.Schema({
       ],
       images: [{ type: String }],
       stock: { type: Number, required: true }, // Images specific to this variant combination
-      price: { type: Number, required: true },
+      offerdPrice: { type: Number, required: true },
+      originalPrice: { type: Number, required: true },
     },
   ],
   createdAt: { type: Date, default: Date.now },
