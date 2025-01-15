@@ -42,11 +42,11 @@ totalOfferdPrice: { type: Number, required: true }, // Total price of the order 
     enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
     default: "pending", // Status of the order
   },
-  review:{
+  review:[{
     type: mongoose.Schema.Types.ObjectId,
         ref: "Review",
        
-  },
+  }],
 // Timestamp of order updates
 },{
   timestamps: true

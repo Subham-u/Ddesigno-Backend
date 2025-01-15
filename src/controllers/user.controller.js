@@ -2,6 +2,7 @@ import { Address } from "../models/address.model.js";
 import { CartItem } from "../models/cart.model.js";
 import { Order } from "../models/order.model.js";
 import { Product } from "../models/product.model.js";
+import { Review } from "../models/review.model.js";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -266,5 +267,41 @@ export const checkoutProduct = asyncHandler(
         return res.status(200).json(new ApiResponse(200,newOrder,"Order created successfully"))
         
     
+    }
+)
+
+
+export const requestCancelation = asyncHandler({
+
+})
+
+export const writeReview = asyncHandler(
+    async(req,res)=>{
+        const user = req.user
+        const{ productId , rating , comment } =req.body
+        const{orderId} = req.params
+        const order = await Order.findById(orderId)
+        const product = await Product.findById(productId)
+        if(!product){
+            throw new ApiError(400,"Product does not exist database") 
+        }
+        if(!order){
+            throw new ApiError(400,"Order does not exist database")
+        }
+        const newReview = await Review.create(
+            {
+                user:user._id,
+                order: order._id,
+                rating,
+                product:productId,
+                comment
+            }
+        )
+        if(!newReview){
+            throw new ApiError(500,"Review can not be created in database")
+        }
+        order.review.push(newReview._id)
+        await order.save()
+        return res.status(200).json(new ApiResponse(200,newReview,"Review created successfully"))
     }
 )

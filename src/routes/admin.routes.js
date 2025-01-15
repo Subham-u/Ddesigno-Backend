@@ -9,6 +9,8 @@ import {
   deleteCategory,
   deleteFeatureIcon,
   deleteTag,
+  getAllOrders,
+  getAllReviews,
   getAtributeById,
   getAtributes,
   getCategories,
@@ -18,6 +20,7 @@ import {
   getSubCategories,
   getTags,
   listProduct,
+  updateOrder,
 } from "../controllers/admin.controller.js";
 const router = Router();
 
@@ -39,4 +42,7 @@ router.route("/delete-attribute").post(deleteAttribute);
 router.route("/create-tag").post(createTag);
 router.route("/delete-tag").post(deleteTag);
 router.route("/get-tags").get(getTags);
+router.route("/get-all-orders").get(getAllOrders);
+router.route("/update-order/:orderId").put(updateOrder);
+router.route("/get-all-reviews").get(getAllReviews);
 export default router;

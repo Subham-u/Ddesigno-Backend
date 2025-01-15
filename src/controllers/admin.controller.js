@@ -10,6 +10,8 @@ import {
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { API_STATES } from "../utils/ApiStates.js";
+import { Order } from "../models/order.model.js";
+import { Review } from "../models/review.model.js";
 
 export const createCategory = asyncHandler(async (req, res) => {
   const { name, image } = req.body;
@@ -151,7 +153,7 @@ export const listProduct = asyncHandler(async (req, res) => {
   });
 
   if (!newProduct) {
-    throw new ApiError(
+    throw new ApiError(500,
       "Some Error Occured While Creating SubCategory In database ",
     );
   }
@@ -318,3 +320,35 @@ export const getTags = asyncHandler(async (req, res) => {
   const tags = await Tag.find();
   return res.status(200).json(new ApiResponse(200, tags, "good"));
 });
+
+export const getAllOrders = asyncHandler(
+  async(req,res)=>{
+    const orders = await Order.find().populate('products.product').populate('address').lean()
+    
+    return res.status(200).json(new ApiResponse(200, orders, "good"));
+  }
+)
+export const updateOrder = asyncHandler(
+  async(req,res)=>{
+    const{orderId} = req.params
+    const{updateStatus} = req.body
+    const updatedOrder = await Order.findByIdAndUpdate(orderId,{
+      status:updateStatus
+    },{new:true}).populate('products.product').populate('address')
+    if(!updatedOrder){
+      throw new ApiError(500,
+        "Some Updating Order ",
+      );
+    }
+    return res.status(200).json(new ApiResponse(200, updatedOrder, "good"));
+
+  }
+)
+export const getAllReviews = asyncHandler(
+  async(req,res)=>{
+
+    const reviews = await Review.find().populate("product","name").populate("user","name").populate("order","address").populate("order.address")
+    return res.status(200).json(new ApiResponse(200, reviews, "good"));
+
+  }
+)
