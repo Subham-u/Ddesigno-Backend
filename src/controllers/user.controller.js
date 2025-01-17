@@ -172,7 +172,7 @@ export const getCartItems = asyncHandler(
         }
         const cartItems = await CartItem.find({
             user:user._id
-        }).populate()
+        }).populate("product")
         if(!cartItems){
             throw new ApiError(500,'Some Issue Occured')
         }
