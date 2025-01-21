@@ -10,7 +10,7 @@ RUN npm install
 
 
 ENV PORT 3000
-ENV MONGODB_URI mongodb+srv://moinaknaskar408:Naskar1234@cluster9.h7qsuiz.mongodb.net
+ENV MONGODB_URI mongodb://mongodb:27017
 ENV CORS_ORIGIN *
 ENV ACCESS_TOKEN_SECRET vjsnbnbsnvsobnfbfijbfijbfbfiobiofbnkobnfkbnfkbnfkbnfioiobiob
 ENV ACCESS_TOKEN_EXPIRY 1d
