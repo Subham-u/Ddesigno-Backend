@@ -1,11 +1,26 @@
 version: "3.9"
 services:
   mongodb:
+    container_name: db_container
     image: mongo:latest
-    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
-      - ~/Desktop/postgres-databases/ddesigno-mangodb:/data/db
+      - mongodb_data:/data/db
+    networks:
+      - back-tier
+  Dserver:
+    build: .
+    networks:
+      - back-tier
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+
+    
 volumes:
   mongodb_data:
+networks:
+  back-tier:
+  
