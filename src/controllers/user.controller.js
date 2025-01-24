@@ -303,3 +303,22 @@ export const writeReview = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, newReview, "Review created successfully"));
 });
 
+export const getUserOrders = asyncHandler(async (req, res) => {
+  const user = req.user;
+
+  if (!user) {
+    throw new ApiError(400, "User Not found");
+  }
+
+  const orders = await Order.find({ user: user._id })
+    .populate("products.product")
+    .populate("address");
+
+  if (!orders) {
+    throw new ApiError(500, "Some Issue Occurred while fetching orders");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, orders, "User orders fetched successfully"));
+});

@@ -13,7 +13,9 @@ import {
   getwishlistItems,
   writeReview,
   getAdderesss,
+  getUserOrders,
 } from "../controllers/user.controller.js";
+
 import {
   getCategories,
   getCategoriesById,
@@ -39,6 +41,6 @@ router.route("/get-subcategories/:categoryId").get(getSubCategories);
 router.route("/get-category-by-id/:categoryId").get(getCategoriesById);
 router.route("/write-review/:orderId").post(authenticate, writeReview);
 router.route("/get-address").get(authenticate, getAdderesss);
+router.route("/get-user-orders").get(authenticate, getUserOrders);
 
 export default router;
-

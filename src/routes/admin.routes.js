@@ -21,6 +21,8 @@ import {
   getTags,
   listProduct,
   updateOrder,
+  getAllProducts,
+  deleteProduct,
 } from "../controllers/admin.controller.js";
 const router = Router();
 
@@ -45,4 +47,6 @@ router.route("/get-tags").get(getTags);
 router.route("/get-all-orders").get(getAllOrders);
 router.route("/update-order/:orderId").put(updateOrder);
 router.route("/get-all-reviews").get(getAllReviews);
+router.route("/get-all-products").get(getAllProducts);
+router.route("/delete-prolduct/:productId").delete(deleteProduct);
 export default router;
