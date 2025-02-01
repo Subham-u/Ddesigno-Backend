@@ -393,3 +393,20 @@ export const deleteProduct = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, null, "Product deleted successfully"));
 });
+
+export const editAttributes = asyncHandler(
+  async(req,res)=>{
+    const { attributeId } = req.params;
+    const {values} = req.body
+    if(!values){
+      throw(new ApiError(400,"New values not found"))
+    }
+    const attribute = await Attribute.findById(attributeId);
+    attribute.values = values
+    await attribute.save();
+    return res
+      .status(200)
+      .json(new ApiResponse(200, attribute, "attributes updated Successfully"));
+  }
+
+)

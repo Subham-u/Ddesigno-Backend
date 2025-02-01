@@ -23,6 +23,7 @@ import {
   updateOrder,
   getAllProducts,
   deleteProduct,
+  editAttributes,
 } from "../controllers/admin.controller.js";
 const router = Router();
 
@@ -36,6 +37,7 @@ router.route("/get-attributes").get(getAtributes);
 router.route("/get-subcategories/:categoryId").get(getSubCategories);
 router.route("/get-category-by-id/:categoryId").get(getCategoriesById);
 router.route("/get-attribute-by-id/:attributeId").get(getAtributeById);
+router.route("/update-attribute-by-id/:attributeId").put(editAttributes);
 router.route("/get-feature-icons").get(getFeatureIcons);
 router.route("/get-feature-icon-by-id/:featureIconId").get(getFeatureIconById);
 router.route("/delete-categorie").post(deleteCategory);
