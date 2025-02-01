@@ -10,9 +10,9 @@ import {
 } from "../services/email-services.js";
 
 export const signup = asyncHandler(async (req, res) => {
-  const { name, email, password, image } = req.body;
+  const { name, email, password, mobileNo } = req.body;
 
-  if (!email || !password || !name) {
+  if (!email || !password || !name || !mobileNo) {
     return res.status(400).json({
       message: "Email, password and name are required",
     });
@@ -32,7 +32,7 @@ export const signup = asyncHandler(async (req, res) => {
     name,
     email,
     password: hashedPassword,
-    image: image,
+   mobileNo
   });
 
   const userWithoutPassword = user.toObject();
