@@ -114,3 +114,4 @@ export const getFeatureIcons = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, featureIcons, "Tag names fetched successfully"));
 });
+

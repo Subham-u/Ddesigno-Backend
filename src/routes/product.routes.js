@@ -16,4 +16,5 @@ router
   .get(getProductBySubCategory);
 router.route("/get-tag-names").post(getTagNames);
 router.route("/get-feature-icons").post(getFeatureIcons);
+
 export default router;

@@ -410,3 +410,19 @@ export const editAttributes = asyncHandler(
   }
 
 )
+export const updateProduct =  asyncHandler(
+  async(req,res)=>{
+    const {productId} = req.params
+    const newProduct = req.body
+    const product = await Product.findById(productId)
+    if (!product){
+      throw(new ApiError(400,"Product Not Found"))
+    }
+    const updatedProduct = await Product.findByIdAndUpdate(product._id,newProduct,{new:true})
+    if(!updatedProduct){
+      throw(new ApiError(500,"Updated Product Not Found"))
+    }
+    return res.status(200).json(new ApiResponse(200,updatedProduct,"Product Updated Successfully"))
+
+  }
+)
