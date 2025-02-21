@@ -47,6 +47,11 @@ totalOfferdPrice: { type: Number, required: true }, // Total price of the order 
         ref: "Review",
        
   }],
+  payment:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Payment",
+    required: true,
+  }
 // Timestamp of order updates
 },{
   timestamps: true

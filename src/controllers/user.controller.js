@@ -1,6 +1,7 @@
 import { Address } from "../models/address.model.js";
 import { CartItem } from "../models/cart.model.js";
 import { Order } from "../models/order.model.js";
+import { Payment } from "../models/payment.model.js";
 import { Product } from "../models/product.model.js";
 import { Review } from "../models/review.model.js";
 import { User } from "../models/user.model.js";
@@ -206,9 +207,16 @@ export const getwishlistItems = asyncHandler(async (req, res) => {
 
 export const checkoutCart = asyncHandler(async (req, res) => {
   const user = req.user;
+  const {paymentId} = req.body
+  const payment = await Payment.findById(paymentId)
+  if(!payment){
+    throw(new ApiError(400,"Payment not found"))
+  }
+
   if (!user) {
     throw new ApiError(400, "User Not found");
   }
+  
   const { address } = req.body;
   const cartItems = await CartItem.find({
     user: user._id,
@@ -235,6 +243,7 @@ export const checkoutCart = asyncHandler(async (req, res) => {
     products,
     totalOfferdPrice,
     totalOriginalPrice,
+    payment: payment._id
   });
   if (!newOrder) {
     throw new ApiError(500, "Order can not be created in database");
@@ -250,7 +259,11 @@ export const checkoutProduct = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError(400, "User Not found");
   }
-  const { address, productDetails } = req.body;
+  const { address, productDetails , paymentId } = req.body;
+  const payment = await Payment.findById(paymentId)
+  if(!payment){
+    throw(new ApiError(404,"Payment not found"))
+  }
 
   const products = [productDetails];
   const totalOriginalPrice = productDetails["originalPrice"];
@@ -262,6 +275,7 @@ export const checkoutProduct = asyncHandler(async (req, res) => {
     products,
     totalOfferdPrice,
     totalOriginalPrice,
+    payment: payment._id
   });
   if (!newOrder) {
     throw new ApiError(500, "Order can not be created in database");
