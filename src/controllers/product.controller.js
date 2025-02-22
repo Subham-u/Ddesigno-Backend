@@ -117,8 +117,9 @@ export const getFeatureIcons = asyncHandler(async (req, res) => {
 
 export const searchProductsByNameOrDescription = asyncHandler(
   async (req, res) => {
-    const { query } = req.body;
+    const { query } = req.query;
 
+    console.log("dfsdf", query);
     if (!query || typeof query !== "string") {
       throw new ApiError("Please provide a valid search query", 400);
     }

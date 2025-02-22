@@ -17,6 +17,6 @@ router
   .get(getProductBySubCategory);
 router.route("/get-tag-names").post(getTagNames);
 router.route("/get-feature-icons").post(getFeatureIcons);
-router.route("/search").post(searchProductsByNameOrDescription);
+router.route("/search").get(searchProductsByNameOrDescription);
 
 export default router;
