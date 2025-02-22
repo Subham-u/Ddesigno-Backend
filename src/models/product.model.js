@@ -16,6 +16,12 @@ const TagSchema = new mongoose.Schema({
 const ProductSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Product name, e.g., "T-shirt"
   description: { type: String, required: true }, // Product description
+  specifications: [
+    {
+      key: { type: String },
+      value: { type: String },
+    },
+  ],
   features: [
     {
       type: mongoose.Schema.Types.ObjectId,

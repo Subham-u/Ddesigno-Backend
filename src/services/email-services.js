@@ -64,7 +64,7 @@ export const sendForgetPassword = async (to, token) => {
           <h1 style="color: #111827; font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 16px;">
             Reset Your Password
           </h1>
-          <p style="color: #4b5563; text-align: center; margin-bottom: 24px;">
+          <p style="color: #4b5563; text-align : center; margin-bottom: 24px;">
             We received a request to reset your password. Click the button below to create a new password.
           </p>
           <div style="text-align: center;">

@@ -13,7 +13,7 @@ export const getProductsByCategory = asyncHandler(async (req, res) => {
   });
   if (!products) {
     throw new ApiError(
-      "Some Error Occured While Creating Category In database ",
+      "Some Error Occured While Creating Category In database "
     );
   }
   return res
@@ -31,7 +31,7 @@ export const getProductBySubCategory = asyncHandler(async (req, res) => {
   });
   if (!products) {
     throw new ApiError(
-      "Some Error Occured While Creating Category In database ",
+      "Some Error Occured While Creating Category In database "
     );
   }
   return res
@@ -58,7 +58,7 @@ export const getProductById = asyncHandler(async (req, res) => {
     });
   if (!product) {
     throw new ApiError(
-      "Some Error Occured While Creating Category In database ",
+      "Some Error Occured While Creating Category In database "
     );
   }
   return res
@@ -96,7 +96,7 @@ export const getFeatureIcons = asyncHandler(async (req, res) => {
   if (!ids || !Array.isArray(ids) || ids.length === 0) {
     throw new ApiError(
       "Please provide a valid array of feature icons IDs",
-      400,
+      400
     );
   }
 
@@ -115,3 +115,29 @@ export const getFeatureIcons = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, featureIcons, "Tag names fetched successfully"));
 });
 
+export const searchProductsByNameOrDescription = asyncHandler(
+  async (req, res) => {
+    const { query } = req.body;
+
+    if (!query || typeof query !== "string") {
+      throw new ApiError("Please provide a valid search query", 400);
+    }
+
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ],
+    });
+
+    if (!products.length) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, [], "No products found"));
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, products, "Products fetched successfully"));
+  }
+);
