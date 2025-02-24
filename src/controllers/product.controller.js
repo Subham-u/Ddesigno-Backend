@@ -118,12 +118,9 @@ export const getFeatureIcons = asyncHandler(async (req, res) => {
 export const searchProductsByNameOrDescription = asyncHandler(
   async (req, res) => {
     const { query } = req.query;
-
-    console.log("dfsdf", query);
     if (!query || typeof query !== "string") {
       throw new ApiError("Please provide a valid search query", 400);
     }
-
     const products = await Product.find({
       $or: [
         { name: { $regex: query, $options: "i" } },

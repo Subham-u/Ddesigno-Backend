@@ -33,7 +33,7 @@ export const createCategory = asyncHandler(async (req, res) => {
 
   if (!newCategory) {
     throw new ApiError(
-      "Some Error Occured While Creating Category In database "
+      "Some Error Occured While Creating Category In database ",
     );
   }
 
@@ -57,7 +57,7 @@ export const createSubCategory = asyncHandler(async (req, res) => {
   });
   if (!subCategory) {
     throw new ApiError(
-      "Some Error Occured While Creating SubCategory In database "
+      "Some Error Occured While Creating SubCategory In database ",
     );
   }
   category.subCategories.push(subCategory);
@@ -65,7 +65,7 @@ export const createSubCategory = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, subCategory, "SubCategory Created Successfully")
+      new ApiResponse(200, subCategory, "SubCategory Created Successfully"),
     );
 });
 export const createFeatureIcon = asyncHandler(async (req, res) => {
@@ -79,13 +79,13 @@ export const createFeatureIcon = asyncHandler(async (req, res) => {
   });
   if (!newFeatureIcon) {
     throw new ApiError(
-      "Some Error Occured While Creating FeatureIcon In database "
+      "Some Error Occured While Creating FeatureIcon In database ",
     );
   }
   return res
     .status(200)
     .json(
-      new ApiResponse(200, newFeatureIcon, "Feature Icon Created Successfully")
+      new ApiResponse(200, newFeatureIcon, "Feature Icon Created Successfully"),
     );
 });
 export const createAttribute = asyncHandler(async (req, res) => {
@@ -100,14 +100,14 @@ export const createAttribute = asyncHandler(async (req, res) => {
   });
   if (!newAttribute) {
     throw new ApiError(
-      "Some Error Occured While Creating SubCategory In database "
+      "Some Error Occured While Creating SubCategory In database ",
     );
   }
 
   return res
     .status(200)
     .json(
-      new ApiResponse(200, newAttribute, "SubCategory Created Successfully")
+      new ApiResponse(200, newAttribute, "SubCategory Created Successfully"),
     );
 });
 
@@ -130,7 +130,7 @@ export const listProduct = asyncHandler(async (req, res) => {
     specifications,
   } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 
   if (!name) {
     throw new ApiError(400, "Please Provide Required Details");
@@ -156,7 +156,7 @@ export const listProduct = asyncHandler(async (req, res) => {
   if (!newProduct) {
     throw new ApiError(
       500,
-      "Some Error Occured While Creating SubCategory In database "
+      "Some Error Occured While Creating SubCategory In database ",
     );
   }
 
@@ -179,7 +179,7 @@ export const getCategoriesById = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
   const categories = await Category.findById(categoryId).populate(
     "subCategories",
-    "name"
+    "name",
   );
   return res
     .status(200)
@@ -209,7 +209,7 @@ export const getSubCategories = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, subCatagories, "SubCategory Created Successfully")
+      new ApiResponse(200, subCatagories, "SubCategory Created Successfully"),
     );
 });
 
@@ -226,7 +226,7 @@ export const getFeatureIconById = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, featureIcon, "SubCategory Created Successfully")
+      new ApiResponse(200, featureIcon, "SubCategory Created Successfully"),
     );
 });
 
@@ -339,7 +339,7 @@ export const updateOrder = asyncHandler(async (req, res) => {
     {
       status: updateStatus,
     },
-    { new: true }
+    { new: true },
   )
     .populate("products.product")
     .populate("address");
@@ -419,7 +419,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
   const updatedProduct = await Product.findByIdAndUpdate(
     product._id,
     newProduct,
-    { new: true }
+    { new: true },
   );
   if (!updatedProduct) {
     throw new ApiError(500, "Updated Product Not Found");

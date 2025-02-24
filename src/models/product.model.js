@@ -20,6 +20,7 @@ const ProductSchema = new mongoose.Schema({
     {
       key: { type: String },
       value: { type: String },
+      icon: { type: String },
     },
   ],
   features: [
